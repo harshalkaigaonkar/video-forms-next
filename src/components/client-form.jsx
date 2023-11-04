@@ -22,6 +22,8 @@ const UserForm = ({
   isFirst,
   setDataList,
   onSubmitForm,
+  setQuestionsMapping,
+  questionsMapping
 }) => {
   const [hoverControls] = useAutoAnimate();
   const [showControls, setShowControls] = useState(true);
@@ -36,10 +38,51 @@ const UserForm = ({
       setShowLoader(false);
       videoRef.current.play();
     }
+    setAnswer(data.answer);
     return () => {
       clearTimeout(timeout);
     };
-  }, []);
+  }, [data.answer]);
+
+  const onPrevHandler = () => {
+    console.log("clicked")
+    if(questionsMapping.length === 0) {
+        return;
+    }
+    const currLevel = questionsMapping.at(-1);
+    setQuestionsMapping(mapping => mapping.slice(0, -1));
+    setCurrentLevel(currLevel);
+  }
+
+  const onNextHandler = () => {
+    let nextStep;
+    if (
+      !!data.nextStep &&
+      data.nextStep !== -1 &&
+      data.type === "text"
+    )
+      nextStep = data.nextStep;
+    else {
+      const nextBlockIndex = data.options.findIndex(
+        (i) => i.value === answer
+      );
+      nextStep = data.options[nextBlockIndex].nextNode;
+    }
+
+    if(!nextStep) return;
+    setCurrentLevel(nextStep);
+
+    setDataList((d) => [
+      ...d.map((item) => {
+        if (item.id === data.id) {
+          return { ...item, answer };
+        }
+        return item;
+      }),
+    ]);
+
+    setQuestionsMapping(mapping => [...mapping, nextStep])
+  }
 
   return (
     <Dialog defaultOpen={true} open={true} className="outline-none">
@@ -186,7 +229,7 @@ const UserForm = ({
               ) : (
                 <>
                   {!isFirst ? (
-                    <Button variant="outline" className="flex gap-1">
+                    <Button variant="outline" className="flex gap-1" onClick={onPrevHandler}>
                       <span>
                         <ArrowLeftCircleIcon size={15} />
                       </span>
@@ -197,29 +240,7 @@ const UserForm = ({
                   )}
                   <Button
                     className="flex gap-1"
-                    onClick={() => {
-                      if (
-                        !!data.nextStep &&
-                        data.nextStep !== -1 &&
-                        data.type === "text"
-                      )
-                        setCurrentLevel(data.nextStep);
-                      else {
-                        const nextBlockIndex = data.options.findIndex(
-                          (i) => i.value === answer
-                        );
-                        setCurrentLevel(data.options[nextBlockIndex].nextNode);
-                      }
-
-                      setDataList((d) => [
-                        ...d.map((item) => {
-                          if (item.id === data.id) {
-                            return { ...item, answer };
-                          }
-                          return item;
-                        }),
-                      ]);
-                    }}
+                    onClick={onNextHandler}
                     disabled={!answer}
                   >
                     {" "}
@@ -328,7 +349,7 @@ const UserForm = ({
               ) : (
                 <>
                   {!isFirst ? (
-                    <Button variant="outline" className="flex gap-1 text-black">
+                    <Button variant="outline" className="flex gap-1 text-black" onClick={onPrevHandler}>
                       <span>
                         <ArrowLeftCircleIcon size={15} />
                       </span>
@@ -339,29 +360,7 @@ const UserForm = ({
                   )}
                   <Button
                     className="flex gap-1"
-                    onClick={() => {
-                      if (
-                        !!data.nextStep &&
-                        data.nextStep !== -1 &&
-                        data.type === "text"
-                      )
-                        setCurrentLevel(data.nextStep);
-                      else {
-                        const nextBlockIndex = data.options.findIndex(
-                          (i) => i.value === answer
-                        );
-                        setCurrentLevel(data.options[nextBlockIndex].nextNode);
-                      }
-
-                      setDataList((d) => [
-                        ...d.map((item) => {
-                          if (item.id === data.id) {
-                            return { ...item, answer };
-                          }
-                          return item;
-                        }),
-                      ]);
-                    }}
+                    onClick={onNextHandler}
                     disabled={!answer}
                   >
                     {" "}
@@ -384,6 +383,7 @@ const UserFormLevels = ({ data, userInfo }) => {
   const [parent] = useAutoAnimate();
   const [currentLevel, setCurrentLevel] = useState(0);
   const [questionsData, setQuestionsData] = useState(data.questions);
+  const [questionsMapping, setQuestionsMapping] = useState([0]);
 
   const onSubmitForm = (e) => {
     const body = {
@@ -401,6 +401,8 @@ const UserFormLevels = ({ data, userInfo }) => {
             return (
               <UserForm
                 key={index}
+                questionsMapping={questionsMapping}
+                setQuestionsMapping={setQuestionsMapping}
                 isLast={index === data.length - 1}
                 isFirst={index === 0}
                 data={item}
