@@ -42,7 +42,7 @@ const nodeTypes = {
   questionNode: QuestionNode,
 };
 
-const SaveRestore = () => {
+const SaveRestore = ({ formName }) => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -58,7 +58,6 @@ const SaveRestore = () => {
       const targetNodeID = params.target;
 
       const sourceNode = nodes.find((node) => node.id === sourceNodeId);
-      const targetNode = nodes.find((node) => node.id === targetNodeID);
 
       if (sourceNode.data.type === "text") {
         const number = edges.reduce((prev, edge) => {
@@ -131,9 +130,10 @@ const SaveRestore = () => {
       createForm({
         nodes: flow.nodes,
         edges: flow.edges,
+        formName,
       });
     }
-  }, [rfInstance]);
+  }, [rfInstance, formName]);
 
   const { dispatch } = useNodesContext();
   const onAdd = useCallback(() => {

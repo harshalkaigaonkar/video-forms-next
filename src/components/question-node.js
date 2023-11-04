@@ -18,13 +18,13 @@ export const QuestionNode = ({ id, data, isConnectable }) => {
     <>
       <Handle
         type="target"
-        position={Position.Top}
+        position={Position.Left}
         id={id}
         isConnectable={isConnectable}
       />
       <Handle
         type="source"
-        position={Position.Bottom}
+        position={Position.Right}
         id={id}
         isConnectable={isConnectable}
       />

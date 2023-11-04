@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     console.log(req.body);
 
-    const { nodes, edges } = req.body;
+    const { nodes, edges, formName } = req.body;
 
     const questions = nodes.map(({ id, data }, index) => ({
       label: data.question,
@@ -14,19 +14,21 @@ export default async function handler(req, res) {
       video:
         data.video ??
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-      step: +id,
+      step: +index,
       options: JSON.stringify(
         data.options.map((option) => ({
           value: option.value,
-          nextNode: +nodes.find((node) => node.id === option.target)?.id,
+          nextNode:
+            +nodes.findIndex((node) => node.id === option.target) || null,
         }))
       ),
-      nextStep: Number(
-        nodes.find(
-          (node) =>
-            node.data.id === edges.find((edge) => edge.source === id)?.target
-        )?.id || 0
-      ),
+      nextStep: nodes.findIndex((node) => {
+        const findEdgeWithSource = edges.find((edge) => edge.source === id);
+        if (!findEdgeWithSource) {
+          return false;
+        }
+        return node.id === findEdgeWithSource.target;
+      }),
     }));
 
     const form = await prisma.form.create({
@@ -43,7 +45,7 @@ export default async function handler(req, res) {
             },
           },
         },
-        name: "Untitled",
+        name: formName,
         questions: {
           create: questions,
         },
