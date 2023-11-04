@@ -15,6 +15,7 @@ import { Label } from "./ui/label";
 import { useToast } from "./ui/use-toast";
 import { useNodesContext } from "@/providers/NodesProvider";
 import { useState, useEffect } from "react";
+import CloudinaryUploadWidget from "./cloudinary-uploader";
 
 const NodeEditor = ({ nodes, setNodes }) => {
   const { toast } = useToast();
@@ -86,13 +87,11 @@ const NodeEditor = ({ nodes, setNodes }) => {
     }));
   };
 
-  const handleOpenChange = (openValue) => {
-    if (!openValue) {
-      dispatch({
-        type: "reset",
-      });
-    }
-    setOpen(openValue);
+  const handleClose = () => {
+    dispatch({
+      type: "reset",
+    });
+    setOpen(false);
   };
 
   const handleSave = () => {
@@ -176,7 +175,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
   };
 
   return (
-    <Sheet className="bg-white" open={open} onOpenChange={handleOpenChange}>
+    <Sheet className="bg-white" open={open}>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
@@ -194,6 +193,13 @@ const NodeEditor = ({ nodes, setNodes }) => {
               onChange={handleQuestionChange}
               value={nodeData?.question || ""}
               className="col-span-3"
+            />
+            <div className="my-1 mt-4">Video: </div>
+            <CloudinaryUploadWidget
+              setPublicId={(nodeData) => console.log(nodeData)}
+              uwConfig={{
+                cloudName: "dhwjzvqyv",
+              }}
             />
           </div>
           <div className="my-4">
@@ -233,6 +239,9 @@ const NodeEditor = ({ nodes, setNodes }) => {
         <SheetFooter>
           <Button onClick={handleSave} type="submit">
             Save changes
+          </Button>
+          <Button onClick={handleClose} variant="secondary">
+            Close
           </Button>
         </SheetFooter>
       </SheetContent>
