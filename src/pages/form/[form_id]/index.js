@@ -63,7 +63,7 @@ export default function Form({ form }) {
 
 export const getServerSideProps = async (context) => {
   const id = context.query.form_id;
-  const res = await fetch(`http://localhost:3000/api/get-form?id=${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-form?id=${id}`);
   const result = await res.json();
   return { props: { form: result?.form } };
 };

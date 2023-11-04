@@ -60,7 +60,7 @@ export default function Home({ forms }) {
 
 export const getServerSideProps = async (context) => {
   const res = await fetch(
-    `http://localhost:3000/api/get-forms-for-user?id=${"admin"}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-forms-for-user?id=${"admin"}`
   );
   const result = await res.json();
   return { props: { forms: result.forms } };
