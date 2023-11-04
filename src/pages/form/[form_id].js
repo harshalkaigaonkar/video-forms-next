@@ -1,17 +1,48 @@
 import UserForm from "@/components/client-form";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
+import UserInfoDialog from "@/components/user-info-dialog";
 import { Inter } from "next/font/google";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Form({form}) {
-  console.log("repo", form)
+  const { toast } = useToast();
+  const [showUserModal, setShowUserModal] = useState(true);
+  const [userInfo, setUserInfo] = useState({name:"", email:""});
+  const onSubmitHandler = (e) => {
+    e.preventDefault()
+    if(!(userInfo.name)) {
+      toast({
+        variant: "destructive",
+        title: "Please include a name.",
+      });
+      return;
+    }
+    if(!(userInfo.email.includes('@') && userInfo.email.includes('.'))) {
+      toast({
+        variant: "destructive",
+        title: "Please include '@/.' in the email address",
+      });
+      return;
+    }
+
+    setShowUserModal(false);
+  }
   return (
     <main
       className={`flex text-black min-h-screen h-screen w-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
-      <UserForm data={{...form, questions: form.questions.map((q) => ({
+      { !showUserModal ? <UserForm data={{...form, questions: form.questions.map((q) => ({
         ...q, options: JSON.parse(q.options)
-      }))}} />
+      }))}} userInfo={userInfo} />
+      :  
+        <UserInfoDialog showUserModal={showUserModal} setShowUserModal={setShowUserModal} setUserInfo={setUserInfo} userInfo={userInfo} onSubmitHandler={onSubmitHandler} />
+            }
+    <Toaster />
     </main>
   );
 }

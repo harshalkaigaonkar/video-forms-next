@@ -86,7 +86,7 @@ import { Transition } from '@headlessui/react'
 //     ]
 
 
-const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
+const UserForm = ({data, setCurrentLevel, isLast, isFirst, setDataList, onSubmitForm}) => {
     const [hoverControls] = useAutoAnimate();
     const [showControls, setShowControls] = useState(true);
     const [showPlay, setShowPlay] = useState(true);
@@ -118,7 +118,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                     {
                         showLoader ? (<>
                             <Loader />
-                        </>): <Button className="absolute z-50 rounded-full top-[45%] left-[45%] w-20 h-20 p-4 " variant="outline" size="icon" onClick={() => !!videoRef.current.paused ? videoRef.current.play():  videoRef.current.pause()}>{
+                        </>): <Button className="absolute z-40 rounded-full top-[45%] left-[45%] w-20 h-20 p-4 " variant="outline" size="icon" onClick={() => !!videoRef.current.paused ? videoRef.current.play():  videoRef.current.pause()}>{
                      !showPlay ?  <Play className="h-7 w-7" />: <Pause className="h-7 w-7" />
                 }</Button>
                     }
@@ -176,7 +176,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                         isLast ? (
                             <>
                                 <div class="flex-1" />
-                                <Button variant="">Submit 🔥</Button>
+                                <Button variant="" type='submit' onClick={onSubmitForm}>Submit 🔥</Button>
                             </>
                         ) : (
                             <>
@@ -188,6 +188,13 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                                         const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
                                         setCurrentLevel(data.options[nextBlockIndex].nextNode)
                                     }
+
+                                    setDataList(d => ([...d.map((item) => {
+                                        if(item.id === data.id) {
+                                            return {...item, answer}
+                                        }
+                                        return item;
+                                    })]))
                             }} disabled={!answer}> Next { "   "} <span><ArrowRightCircleIcon size={15} /></span></Button>
                             </>
                         )
@@ -249,7 +256,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                         isLast ? (
                             <>
                                 <div class="flex-1" />
-                                <Button variant="">Submit 🔥</Button>
+                                <Button type='submit' variant="" onClick={onSubmitForm}>Submit 🔥</Button>
                             </>
                         ) : (
                             <>
@@ -261,6 +268,13 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                                         const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
                                         setCurrentLevel(data.options[nextBlockIndex].nextNode)
                                     }
+
+                                    setDataList(d => ([...d.map((item) => {
+                                        if(item.id === data.id) {
+                                            return {...item, answer}
+                                        }
+                                        return item;
+                                    })]))
                             }} disabled={!answer}> Next { "   "} <span><ArrowRightCircleIcon size={15} /></span></Button>
                             </>
                         )
@@ -275,19 +289,27 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
   )
 }
 
-const UserFormLevels = ({data}) => {
+const UserFormLevels = ({data, userInfo}) => {
     const [parent] = useAutoAnimate();
     const [currentLevel, setCurrentLevel] = useState(0);
-    const [answers, setAnswers] = useState([]);
     const [questionsData, setQuestionsData] = useState(data.questions);
-    console.log(currentLevel)
+
+    const onSubmitForm = (e) => {
+        const body = {
+            questions:  questionsData,
+            user:   userInfo,
+        }
+        console.log(body)
+    }
+    console.log(questionsData ,"questionsData")
     return (
         <div ref={parent}>
             {!!questionsData && questionsData.map((item, index, data) => {
                 if(index === currentLevel) {
-                  return  <UserForm key={index} isLast={index === (data.length-1)} isFirst={index === 0} data={item} setCurrentLevel={setCurrentLevel} setAnswers={setAnswers} />
+                  return  <UserForm key={index} isLast={index === (data.length-1)} isFirst={index === 0} data={item} setCurrentLevel={setCurrentLevel} setDataList={setQuestionsData} onSubmitForm={onSubmitForm} />
                 }
             })}
+           
         </div>
     )
 }
