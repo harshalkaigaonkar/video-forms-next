@@ -45,11 +45,6 @@ export default function Form({ form }) {
                 ...q,
                 options: JSON.parse(q.options),
               })),
-              {
-                question: "Thanks for submitting",
-                id: "last_slide",
-                type: "text",
-              },
             ],
           }}
           userInfo={userInfo}

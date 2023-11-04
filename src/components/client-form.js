@@ -23,7 +23,8 @@ const UserForm = ({
   setDataList,
   onSubmitForm,
   setQuestionsMapping,
-  questionsMapping
+  questionsMapping,
+  length,
 }) => {
   const [hoverControls] = useAutoAnimate();
   const [showControls, setShowControls] = useState(true);
@@ -45,32 +46,28 @@ const UserForm = ({
   }, [data.answer]);
 
   const onPrevHandler = () => {
-    console.log("clicked")
-    if(questionsMapping.length === 0) {
-        return;
+    console.log("clicked");
+    if (questionsMapping.length === 0) {
+      return;
     }
     const currLevel = questionsMapping.at(-1);
-    setQuestionsMapping(mapping => mapping.slice(0, -1));
+    setQuestionsMapping((mapping) => mapping.slice(0, -1));
     setCurrentLevel(currLevel);
-  }
+  };
 
   const onNextHandler = () => {
     let nextStep;
-    if (
-      !!data.nextStep &&
-      data.nextStep !== -1 &&
-      data.type === "text"
-    )
+    if (!!data.nextStep && data.nextStep !== -1 && data.type === "text")
       nextStep = data.nextStep;
     else {
-      const nextBlockIndex = data.options.findIndex(
-        (i) => i.value === answer
-      );
-      nextStep = data.options[nextBlockIndex].nextNode;
-    }
+      const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
 
-    if(!nextStep) return;
-    setCurrentLevel(nextStep);
+      console.log(nextBlockIndex);
+
+      if (nextBlockIndex !== -1) {
+        nextStep = data.options[nextBlockIndex].nextNode;
+      }
+    }
 
     setDataList((d) => [
       ...d.map((item) => {
@@ -81,8 +78,12 @@ const UserForm = ({
       }),
     ]);
 
-    setQuestionsMapping(mapping => [...mapping, nextStep])
-  }
+    if (!nextStep) {
+      nextStep = length - 1;
+    }
+    setCurrentLevel(nextStep);
+    setQuestionsMapping((mapping) => [...mapping, nextStep]);
+  };
 
   return (
     <Dialog defaultOpen={true} open={true} className="outline-none">
@@ -151,7 +152,6 @@ const UserForm = ({
               <h1 className="font-bold text-xl">{data.label}</h1>
             </Transition.Child>
             {!!data.type &&
-              !isLast &&
               (data.type === "text" ? (
                 <Transition.Child
                   as={React.Fragment}
@@ -222,14 +222,22 @@ const UserForm = ({
               {isLast ? (
                 <>
                   <div class="flex-1" />
-                  <Button variant="" type="submit" onClick={onSubmitForm}>
+                  <Button
+                    variant=""
+                    type="submit"
+                    onClick={onSubmitForm(data.id, answer)}
+                  >
                     Submit 🔥
                   </Button>
                 </>
               ) : (
                 <>
                   {!isFirst ? (
-                    <Button variant="outline" className="flex gap-1" onClick={onPrevHandler}>
+                    <Button
+                      variant="outline"
+                      className="flex gap-1"
+                      onClick={onPrevHandler}
+                    >
                       <span>
                         <ArrowLeftCircleIcon size={15} />
                       </span>
@@ -270,7 +278,6 @@ const UserForm = ({
                 <h1 className="font-bold text-xl">{data.label}</h1>
               </Transition.Child>
               {!!data.type &&
-                !isLast &&
                 (data.type === "text" ? (
                   <Transition.Child
                     as={React.Fragment}
@@ -339,38 +346,33 @@ const UserForm = ({
             leaveTo="opacity-0 translate-y-4"
           >
             <div className="flex flex-row justify-between items-center mt-2 text-white">
-              {isLast ? (
-                <>
-                  <div class="flex-1" />
-                  <Button type="submit" variant="" onClick={onSubmitForm}>
-                    Submit 🔥
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {!isFirst ? (
-                    <Button variant="outline" className="flex gap-1 text-black" onClick={onPrevHandler}>
-                      <span>
-                        <ArrowLeftCircleIcon size={15} />
-                      </span>
-                      Prev
-                    </Button>
-                  ) : (
-                    <div className="flex-1" />
-                  )}
+              <>
+                {!isFirst ? (
                   <Button
-                    className="flex gap-1"
-                    onClick={onNextHandler}
-                    disabled={!answer}
+                    variant="outline"
+                    className="flex gap-1 text-black"
+                    onClick={onPrevHandler}
                   >
-                    {" "}
-                    Next {"   "}{" "}
                     <span>
-                      <ArrowRightCircleIcon size={15} />
+                      <ArrowLeftCircleIcon size={15} />
                     </span>
+                    Prev
                   </Button>
-                </>
-              )}
+                ) : (
+                  <div className="flex-1" />
+                )}
+                <Button
+                  className="flex gap-1"
+                  onClick={onNextHandler}
+                  disabled={!answer}
+                >
+                  {" "}
+                  Next {"   "}{" "}
+                  <span>
+                    <ArrowRightCircleIcon size={15} />
+                  </span>
+                </Button>
+              </>
             </div>
           </Transition>
         </div>
@@ -385,27 +387,40 @@ const UserFormLevels = ({ data, userInfo }) => {
   const [questionsData, setQuestionsData] = useState(data.questions);
   const [questionsMapping, setQuestionsMapping] = useState([0]);
 
-  const onSubmitForm = (e) => {
+  const onSubmitForm = (id, answer) => () => {
+    const newQuestionsData = [
+      ...questionsData.map((item) => {
+        if (item.id === id) {
+          return { ...item, answer };
+        }
+        return item;
+      }),
+    ];
     const body = {
-      questions: questionsData,
+      questions: newQuestionsData,
       user: userInfo,
     };
     console.log(body);
   };
-  console.log(questionsData, "questionsData");
   return (
     <div ref={parent}>
       {!!questionsData &&
-        questionsData.map((item, index, data) => {
+        questionsData.map((item, index) => {
+          console.log(item);
+          const hasNextNode =
+            (!!item.nextStep && item.nextStep !== -1 && item.type === "text") ||
+            item.options.find((i) => i.nextNode !== -1);
+
           if (index === currentLevel) {
             return (
               <UserForm
                 key={index}
                 questionsMapping={questionsMapping}
                 setQuestionsMapping={setQuestionsMapping}
-                isLast={index === data.length - 1}
+                isLast={!hasNextNode}
                 isFirst={index === 0}
                 data={item}
+                length={questionsData.length}
                 setCurrentLevel={setCurrentLevel}
                 setDataList={setQuestionsData}
                 onSubmitForm={onSubmitForm}
