@@ -6,12 +6,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ forms }) {
+  const { toast } = useToast();
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      toast({
+        description: "Copied to clipboard",
+      });
+    });
+  };
+
   return (
     <main
       className={` text-black min-h-screen px-2 sm:px-4 h-screen w-screen ${inter.className}`}
@@ -28,12 +38,16 @@ export default function Home({ forms }) {
       </nav>
       <div className=" max-w-[1080px] px-0 py-4 sm:py-8 w-full mx-auto gap-4 grid grid-cols-1 sm:grid-cols-2 ">
         {forms.map((item) => (
-          <Card key={item.id}>
+          <Card className="px-0" key={item.id}>
+            <CardContent>
+              {console.log(item)}
+              <video autoPlay loop muted src={item.questions[0].video}></video>
+            </CardContent>
             <CardHeader>
               <CardTitle>{item.name}</CardTitle>
             </CardHeader>
             <CardFooter className="flex justify-end">
-              <Button>🚀 Share</Button>
+              <Button onClick={handleCopy}>🚀 Share</Button>
             </CardFooter>
           </Card>
         ))}

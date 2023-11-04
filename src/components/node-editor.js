@@ -46,7 +46,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
       const selectedNode = nodes.find((item) => item.id === data.id);
       setSelectedNode(selectedNode);
       setNodeData({ ...selectedNode.data });
-      setOptions([...selectedNode.data.options]);
+      setOptions([...selectedNode.data.options, ""]);
       setOpen(true);
     }
   }, [data.id, setSelectedNode, nodes]);
@@ -194,7 +194,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
 
   return (
     <Sheet className="bg-white" open={open}>
-      <SheetContent>
+      <SheetContent className=" overflow-y-auto ">
         <SheetHeader>
           <SheetTitle>
             {data.id === "new" ? "Add Node" : "Edit Node"}

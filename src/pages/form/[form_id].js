@@ -9,20 +9,20 @@ import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Form({form}) {
+export default function Form({ form }) {
   const { toast } = useToast();
   const [showUserModal, setShowUserModal] = useState(true);
-  const [userInfo, setUserInfo] = useState({name:"", email:""});
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const onSubmitHandler = (e) => {
-    e.preventDefault()
-    if(!(userInfo.name)) {
+    e.preventDefault();
+    if (!userInfo.name) {
       toast({
         variant: "destructive",
         title: "Please include a name.",
       });
       return;
     }
-    if(!(userInfo.email.includes('@') && userInfo.email.includes('.'))) {
+    if (!(userInfo.email.includes("@") && userInfo.email.includes("."))) {
       toast({
         variant: "destructive",
         title: "Please include '@/.' in the email address",
@@ -31,26 +31,47 @@ export default function Form({form}) {
     }
 
     setShowUserModal(false);
-  }
+  };
   return (
     <main
       className={`flex text-black min-h-screen h-screen w-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
-      { !showUserModal ? <UserForm data={{...form, questions: form.questions.map((q) => ({
-        ...q, options: JSON.parse(q.options)
-      }))}} userInfo={userInfo} />
-      :  
-        <UserInfoDialog showUserModal={showUserModal} setShowUserModal={setShowUserModal} setUserInfo={setUserInfo} userInfo={userInfo} onSubmitHandler={onSubmitHandler} />
-            }
-    <Toaster />
+      {!showUserModal ? (
+        <UserForm
+          data={{
+            ...form,
+            questions: [
+              ...form.questions.map((q) => ({
+                ...q,
+                options: JSON.parse(q.options),
+              })),
+              {
+                question: "Thanks for submitting",
+                id: "last_slide",
+                type: "text",
+              },
+            ],
+          }}
+          userInfo={userInfo}
+        />
+      ) : (
+        <UserInfoDialog
+          showUserModal={showUserModal}
+          setShowUserModal={setShowUserModal}
+          setUserInfo={setUserInfo}
+          userInfo={userInfo}
+          onSubmitHandler={onSubmitHandler}
+        />
+      )}
+      <Toaster />
     </main>
   );
 }
 
 export const getServerSideProps = async (context) => {
   const id = context.query.form_id;
-  console.log(id)
+  console.log(id);
   const res = await fetch(`http://localhost:3000/api/get-form?id=${id}`);
   const result = await res.json();
-  return { props: { form:result?.form } };
+  return { props: { form: result?.form } };
 };

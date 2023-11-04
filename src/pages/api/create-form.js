@@ -37,7 +37,7 @@ export default async function handler(req, res) {
               create: {
                 id: "admin",
                 name: "admin",
-                password: "admin",
+                email: "admin",
               },
               where: {
                 id: "admin",

@@ -11,6 +11,9 @@ export default async function handler(req, res) {
           id,
         },
       },
+      include: {
+        questions: true,
+      },
     });
     res.status(200).json({ forms });
   } catch (err) {
