@@ -74,3 +74,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+video {
+  
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+@media (max-width: 767px) {
+  video {
+    border-top-left-radius: 0rem;
+  border-bottom-left-radius: 0rem;
+  }
+}
