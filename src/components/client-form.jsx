@@ -209,7 +209,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                         
                     <h1 className='font-bold text-xl'>{data.label}</h1>
                     </Transition.Child>
-                    {!!data.type && (data.type === "text" ? (
+                    {!!data.type && !isLast && (data.type === "text" ? (
                         <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
                     enterFrom="opacity-0 translate-y-4"
                     enterTo="opacity-100 translate-y-0"
