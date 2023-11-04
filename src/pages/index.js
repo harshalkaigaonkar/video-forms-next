@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home({ forms }) {
   return (
     <main
-      className={` text-black min-h-screen h-screen w-screen ${inter.className}`}
+      className={` text-black min-h-screen px-2 sm:px-4 h-screen w-screen ${inter.className}`}
     >
       <nav className="sticky bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-10 top-0">
         <div className="flex items-center gap-2">
@@ -22,7 +22,7 @@ export default function Home({ forms }) {
             VideoForms
           </h3>
         </div>
-        <Link href="/create">
+        <Link className=" hidden sm:block" href="/create">
           <Button>Create Form</Button>
         </Link>
       </nav>
@@ -37,6 +37,9 @@ export default function Home({ forms }) {
             </CardFooter>
           </Card>
         ))}
+        <Link href={"/create"} className="absolute bottom-4 right-4 sm:hidden">
+          <Button>Create Form</Button>
+        </Link>
       </div>
     </main>
   );

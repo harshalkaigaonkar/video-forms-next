@@ -18,6 +18,7 @@ import EdgeDialogComponent from "./create-edge-dialog";
 import { QuestionNode } from "./question-node";
 import { useCreateFormInstanceQuery } from "@/hooks/useFormInstanceQuery";
 import { createForm } from "@/api-functions/formInstance.api";
+import SaveFormDialog from "./save-form-dialog";
 
 const flowKey = "example-flow";
 
@@ -43,7 +44,8 @@ const nodeTypes = {
   questionNode: QuestionNode,
 };
 
-const SaveRestore = ({ formName }) => {
+const FlowEditor = () => {
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -123,18 +125,28 @@ const SaveRestore = ({ formName }) => {
     [setEdges, nodes, toast, setDialogOpen, edges]
   );
 
-  const onSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      localStorage.setItem(flowKey, JSON.stringify(flow));
-      console.log(flow);
-      createForm({
-        nodes: flow.nodes,
-        edges: flow.edges,
-        formName,
-      });
-    }
-  }, [rfInstance, formName]);
+  const onSave = useCallback(
+    (formName) => {
+      if (rfInstance) {
+        const flow = rfInstance.toObject();
+
+        if (!formName.trim()) {
+          toast({
+            variant: "destructive",
+            title: "Form name cannot be empty",
+          });
+          return;
+        }
+
+        createForm({
+          nodes: flow.nodes,
+          edges: flow.edges,
+          formName,
+        });
+      }
+    },
+    [rfInstance, toast]
+  );
 
   const { dispatch } = useNodesContext();
   const onAdd = useCallback(() => {
@@ -142,6 +154,10 @@ const SaveRestore = ({ formName }) => {
       type: "new-node",
     });
   }, [dispatch]);
+
+  const handleSave = () => {
+    setSaveModalOpen(true);
+  };
 
   return (
     <>
@@ -154,6 +170,13 @@ const SaveRestore = ({ formName }) => {
           setEdges={setEdges}
           edges={edges}
           setNodes={setNodes}
+        />
+      )}
+      {!!saveModalOpen && (
+        <SaveFormDialog
+          onSave={onSave}
+          dialogOpen={saveModalOpen}
+          setDialogOpen={setSaveModalOpen}
         />
       )}
       <ReactFlow
@@ -171,7 +194,7 @@ const SaveRestore = ({ formName }) => {
         }}
       >
         <Panel className="flex gap-2" position="bottom-right">
-          <Button onClick={onSave}>Save</Button>
+          <Button onClick={handleSave}>Save</Button>
           <Button onClick={onAdd}>Add node</Button>
         </Panel>
         <Controls />
@@ -180,4 +203,4 @@ const SaveRestore = ({ formName }) => {
   );
 };
 
-export default SaveRestore;
+export default FlowEditor;

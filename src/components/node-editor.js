@@ -40,7 +40,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
         type: "text",
         video: null,
       }));
-      setOptions[""];
+      setOptions([""]);
       setOpen(true);
     } else if (data.id) {
       const selectedNode = nodes.find((item) => item.id === data.id);
@@ -69,6 +69,13 @@ const NodeEditor = ({ nodes, setNodes }) => {
   };
 
   const handleRemoveOptions = (index) => () => {
+    if (options.length < 2) {
+      toast({
+        variant: "destructive",
+        title: "Minimum 1 option required",
+      });
+      return;
+    }
     setOptions((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -155,7 +162,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
       const newNode = {
         id: String(nodes.length + 1),
         type: "questionNode",
-        data: { ...nodeData, ...(nodeData?.type === "mcq" && { options }) },
+        data: { ...nodeData, ...{ options } },
         position: {
           x: 400,
           y: 400,
@@ -171,7 +178,7 @@ const NodeEditor = ({ nodes, setNodes }) => {
               data: {
                 ...node.data,
                 ...nodeData,
-                ...(nodeData?.type === "mcq" && { options }),
+                ...{ options },
               },
             };
           }
