@@ -30,6 +30,7 @@ const initialNodes = [
       options: [],
       type: "text",
       label: "cool",
+      video: null,
     },
     label: "cool",
     position: { x: 100, y: 100 },

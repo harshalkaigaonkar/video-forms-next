@@ -16,7 +16,6 @@ import { useToast } from "./ui/use-toast";
 import { useNodesContext } from "@/providers/NodesProvider";
 import { useState, useEffect } from "react";
 import CloudinaryUploadWidget from "./cloudinary-uploader";
-import { Cloudinary } from "@cloudinary/url-gen";
 
 const NodeEditor = ({ nodes, setNodes }) => {
   const { toast } = useToast();
@@ -39,12 +38,15 @@ const NodeEditor = ({ nodes, setNodes }) => {
         ...prev,
         question: "default",
         type: "text",
+        video: null,
       }));
+      setOptions[""];
       setOpen(true);
     } else if (data.id) {
       const selectedNode = nodes.find((item) => item.id === data.id);
       setSelectedNode(selectedNode);
       setNodeData({ ...selectedNode.data });
+      setOptions([...selectedNode.data.options]);
       setOpen(true);
     }
   }, [data.id, setSelectedNode, nodes]);
@@ -141,6 +143,14 @@ const NodeEditor = ({ nodes, setNodes }) => {
       return;
     }
 
+    if (!nodeData?.video) {
+      toast({
+        variant: "destructive",
+        title: "Video cannot be empty",
+      });
+      return;
+    }
+
     if (data.id === "new") {
       const newNode = {
         id: String(nodes.length + 1),
@@ -196,8 +206,16 @@ const NodeEditor = ({ nodes, setNodes }) => {
               className="col-span-3"
             />
             <div className="my-1 mt-4">Video: </div>
+            {!!nodeData?.video && (
+              <p className=" truncate text-ellipsis ">{nodeData.video}</p>
+            )}
             <CloudinaryUploadWidget
-              setPublicId={(nodeData) => console.log(nodeData)}
+              setPublicId={(url) => {
+                setNodeData((prev) => ({
+                  ...prev,
+                  video: url,
+                }));
+              }}
               uwConfig={{
                 cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
                 uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET,

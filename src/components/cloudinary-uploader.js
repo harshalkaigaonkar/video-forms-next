@@ -17,6 +17,7 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
         script.setAttribute("id", "uw");
         script.src = "https://upload-widget.cloudinary.com/global/all.js";
         script.addEventListener("load", () => setLoaded(true));
+        document.body.style.pointerEvents = "auto";
         document.body.appendChild(script);
       } else {
         // If already loaded, update the state
@@ -27,7 +28,7 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
 
   const initializeCloudinaryWidget = () => {
     if (loaded) {
-      var myWidget = window.cloudinary.createUploadWidget(
+      const myWidget = window.cloudinary.createUploadWidget(
         {
           ...uwConfig,
           styles: {
@@ -49,8 +50,9 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
         "click",
         function () {
           myWidget.open();
+          document.body.style.pointerEvents = "auto";
         },
-        false
+        true
       );
     }
   };
