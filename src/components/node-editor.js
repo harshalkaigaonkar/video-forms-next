@@ -1,0 +1,243 @@
+import {
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  Sheet,
+} from "./ui/sheet";
+import { DeleteIcon } from "lucide-react";
+import { PlusCircleIcon } from "lucide-react";
+import { Input } from "./ui/input";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Button } from "./ui/button";
+import { Label } from "./ui/label";
+import { useToast } from "./ui/use-toast";
+import { useNodesContext } from "@/providers/NodesProvider";
+import { useState, useEffect } from "react";
+
+const NodeEditor = ({ nodes, setNodes }) => {
+  const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [nodeData, setNodeData] = useState({
+    type: "text",
+  });
+  const { data, dispatch } = useNodesContext();
+  const [options, setOptions] = useState([
+    {
+      value: "",
+      target: null,
+    },
+  ]);
+
+  useEffect(() => {
+    if (data.id === "new") {
+      setNodeData((prev) => ({
+        ...prev,
+        question: "default",
+        type: "text",
+      }));
+      setOpen(true);
+    } else if (data.id) {
+      const selectedNode = nodes.find((item) => item.id === data.id);
+      setSelectedNode(selectedNode);
+      setNodeData({ ...selectedNode.data });
+      setOpen(true);
+    }
+  }, [data.id, setSelectedNode, nodes]);
+
+  const handleQuestionChange = (event) => {
+    setNodeData((prev) => ({
+      ...prev,
+      question: event.target.value,
+    }));
+  };
+
+  const handleAddOptions = () => {
+    setOptions((prev) => [
+      ...prev,
+      {
+        value: "",
+        target: null,
+      },
+    ]);
+  };
+
+  const handleRemoveOptions = (index) => () => {
+    setOptions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleOptionsChange = (index) => (event) => {
+    setOptions((prev) => {
+      const newOptions = [...prev];
+      newOptions[index] = {
+        ...newOptions[index],
+        value: event.target.value,
+      };
+      return newOptions;
+    });
+  };
+
+  const handleTypeChange = (value) => {
+    setNodeData((prev) => ({
+      ...prev,
+      type: value,
+    }));
+  };
+
+  const handleOpenChange = (openValue) => {
+    if (!openValue) {
+      dispatch({
+        type: "reset",
+      });
+    }
+    setOpen(openValue);
+  };
+
+  const handleSave = () => {
+    // check the nodeData
+
+    if (!nodeData?.question?.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Question cannot be empty",
+      });
+      return;
+    }
+
+    if (!nodeData?.type) {
+      toast({
+        variant: "destructive",
+        title: "Type cannot be empty",
+      });
+      return;
+    }
+
+    if (
+      nodeData?.type === "mcq" &&
+      !options?.filter((item) => !!item.value.trim()).length
+    ) {
+      toast({
+        variant: "destructive",
+        title: "Options cannot be empty",
+      });
+      return;
+    }
+
+    // check if same options
+    const isSameOptions = (options) => {
+      const uniqueOptions = [
+        ...new Set(options.map((option) => option.value.trim())),
+      ];
+      return uniqueOptions.length !== options.length;
+    };
+
+    if (nodeData?.type === "mcq" && isSameOptions(options)) {
+      toast({
+        variant: "destructive",
+        title: "Options cannot be same",
+      });
+      return;
+    }
+
+    if (data.id === "new") {
+      const newNode = {
+        id: String(nodes.length + 1),
+        type: "questionNode",
+        data: { ...nodeData, ...(nodeData?.type === "mcq" && { options }) },
+        position: {
+          x: 0,
+          y: 0,
+        },
+      };
+      setNodes((nds) => nds.concat(newNode));
+    } else if (data.id) {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id === data.id) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                ...nodeData,
+                ...(nodeData?.type === "mcq" && { options }),
+              },
+            };
+          }
+          return node;
+        })
+      );
+    }
+    dispatch({
+      type: "reset",
+    });
+    setOpen(false);
+  };
+
+  return (
+    <Sheet className="bg-white" open={open} onOpenChange={handleOpenChange}>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>
+            {data.id === "new" ? "Add Node" : "Edit Node"}
+          </SheetTitle>
+          <SheetDescription>
+            Make changes to your node here. Click save when done.
+          </SheetDescription>
+        </SheetHeader>
+        <div>
+          <div className="my-4">
+            <div className="my-1">Question:</div>
+            <Input
+              id="question"
+              onChange={handleQuestionChange}
+              value={nodeData?.question || ""}
+              className="col-span-3"
+            />
+          </div>
+          <div className="my-4">
+            <div className="my-1">Answer type:</div>
+            <RadioGroup
+              onValueChange={handleTypeChange}
+              value={nodeData?.type || "text"}
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="text" id="text-option" />
+                <Label htmlFor="text-option">Text</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="mcq" id="mcq-option" />
+                <Label htmlFor="mcq-option">MCQ</Label>
+              </div>
+            </RadioGroup>
+          </div>
+          {nodeData?.type === "mcq" && (
+            <div className="mt-4 mb-2">Options:</div>
+          )}
+          {nodeData?.type === "mcq" &&
+            options.map((item, index) => (
+              <div
+                className="flex items-center gap-2 mb-4"
+                key={index + "options"}
+              >
+                <Input
+                  onChange={handleOptionsChange(index)}
+                  value={item.value}
+                />
+                <DeleteIcon onClick={handleRemoveOptions(index)} />
+                <PlusCircleIcon onClick={handleAddOptions} />
+              </div>
+            ))}
+        </div>
+        <SheetFooter>
+          <Button onClick={handleSave} type="submit">
+            Save changes
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+};
+
+export default NodeEditor;
