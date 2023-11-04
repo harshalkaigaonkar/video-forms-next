@@ -16,6 +16,7 @@ import { useToast } from "./ui/use-toast";
 import { useNodesContext } from "@/providers/NodesProvider";
 import { useState, useEffect } from "react";
 import CloudinaryUploadWidget from "./cloudinary-uploader";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 const NodeEditor = ({ nodes, setNodes }) => {
   const { toast } = useToast();

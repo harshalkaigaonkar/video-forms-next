@@ -28,7 +28,15 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
   const initializeCloudinaryWidget = () => {
     if (loaded) {
       var myWidget = window.cloudinary.createUploadWidget(
-        uwConfig,
+        {
+          ...uwConfig,
+          styles: {
+            frame: {
+              position: "absolute",
+              zIndex: 1000,
+            },
+          },
+        },
         (error, result) => {
           if (!error && result && result.event === "success") {
             console.log("Done! Here is the image info: ", result.info);
