@@ -10,80 +10,80 @@ import { Textarea } from './ui/textarea'
 import { Audio } from 'react-loader-spinner'
 import { Transition } from '@headlessui/react'
 
-const data = [
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q1. How was your experience on interviewing with our company?",
-        type: "text" ,
-        nextBlock: 1,
-    },
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q2. How many interview rounds was there while interviewing process?",
-        type: "mcq",
-        options: [
-            {
-                value: "4 Rounds",
-                nextBlock: 2,
-            },
-            {
-                value: "3 Rounds",
-                nextBlock: 3,
-            },
-            {
-                value: "2 Rounds",
-                nextBlock: 4,
-            },
-        ],
-        nextBlock: null
-    },
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q3. How was your experience with interviewing for a senior position role?",
-        type: "text" ,
-        nextBlock: 4,
-    },
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q3. How was your experience with interviewing for a junior position role?",
-        type: "text" ,
-        nextBlock: 4,
-    },
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q4. How will you rate the overall interview experience with us?",
-        type: "mcq",
-        options: [
-            {
-                value: "1",
-                nextBlock: 5,
-            },
-            {
-                value: "2",
-                nextBlock: 5,
-            },
-            {
-                value: "3",
-                nextBlock: 5,
-            },
-            {
-                value: "4",
-                nextBlock: 5,
-            },
-            {
-                value: "5",
-                nextBlock: 5,
-            },
-        ],
-        nextBlock: null
-    },
-    {
-        video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        label: "Q5. Thanks for taking this Survey, will see you soon ✌️",
-        type: null ,
-        nextBlock: null,
-    },
-    ]
+// const data = [
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q1. How was your experience on interviewing with our company?",
+//         type: "text" ,
+//         nextBlock: 1,
+//     },
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q2. How many interview rounds was there while interviewing process?",
+//         type: "mcq",
+//         options: [
+//             {
+//                 value: "4 Rounds",
+//                 nextBlock: 2,
+//             },
+//             {
+//                 value: "3 Rounds",
+//                 nextBlock: 3,
+//             },
+//             {
+//                 value: "2 Rounds",
+//                 nextBlock: 4,
+//             },
+//         ],
+//         nextBlock: null
+//     },
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q3. How was your experience with interviewing for a senior position role?",
+//         type: "text" ,
+//         nextBlock: 4,
+//     },
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q3. How was your experience with interviewing for a junior position role?",
+//         type: "text" ,
+//         nextBlock: 4,
+//     },
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q4. How will you rate the overall interview experience with us?",
+//         type: "mcq",
+//         options: [
+//             {
+//                 value: "1",
+//                 nextBlock: 5,
+//             },
+//             {
+//                 value: "2",
+//                 nextBlock: 5,
+//             },
+//             {
+//                 value: "3",
+//                 nextBlock: 5,
+//             },
+//             {
+//                 value: "4",
+//                 nextBlock: 5,
+//             },
+//             {
+//                 value: "5",
+//                 nextBlock: 5,
+//             },
+//         ],
+//         nextBlock: null
+//     },
+//     {
+//         video: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//         label: "Q5. Thanks for taking this Survey, will see you soon ✌️",
+//         type: null ,
+//         nextBlock: null,
+//     },
+//     ]
 
 
 const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
@@ -126,7 +126,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                 
                 )
             }
-                <video ref={videoRef} onPlay={() => {setShowPlay(true); setShowLoader(false)}} onPause={() => setShowPlay(false)} onLoadedMetadata={() => setShowPlay(true)} className='absolute w-full h-full top-0 left-0 object-cover rounded-2' src={data.video} onLoad={() => showLoader(true)} autoFocus autoPlay />
+                <video ref={videoRef} onPlay={() => {setShowPlay(true); setShowLoader(false)}} onPause={() => setShowPlay(false)} onLoadedMetadata={() => videoRef.current?.play()} className='absolute w-full h-full top-0 left-0 object-cover rounded-2' src={data.video} onLoad={() => showLoader(true)} autoFocus autoPlay />
             </div>
             <div className='hidden md:flex w-1/2 py-8 px-5 flex-col justify-between'>
             <Transition show={true} appear>
@@ -138,7 +138,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                     leaveTo="opacity-0 translate-y-4">
                     
                     <h1 className='font-bold text-xl'>{data.label}</h1></Transition.Child>
-                 {!!data.type && (data.type === "text" ? (
+                 {!!data.type && !isLast && (data.type === "text" ? (
                     <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
                     enterFrom="opacity-0 translate-y-4"
                     enterTo="opacity-100 translate-y-0"
@@ -157,7 +157,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                     leaveTo="opacity-0 translate-y-4">
 
                     <RadioGroup value={answer} onValueChange={setAnswer} className="mt-7">
-                        {data.options.map((option, index) => (<div className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
+                        {data.options.map((option, index) => (<div key={index} className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
                             <RadioGroupItem value={option.value} id={`r${index+1}`} />
                             <Label htmlFor={`r${index+1}`} className="w-full m-2">{option.value}</Label>
                         </div>)) }
@@ -182,11 +182,11 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                             <>
                             {!isFirst ? <Button variant='outline' className="flex gap-1"><span><ArrowLeftCircleIcon size={15} /></span>Prev</Button>: <div className='flex-1' />}
                             <Button className="flex gap-1" onClick={() =>{
-                                if(!!data.nextBlock && data.type === 'text')
-                                    setCurrentLevel(data.nextBlock)
+                                if(!!data.nextStep && data.nextStep !== -1 && data.type === 'text')
+                                    setCurrentLevel(data.nextStep)
                                     else {
                                         const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
-                                        setCurrentLevel(data.options[nextBlockIndex].nextBlock)
+                                        setCurrentLevel(data.options[nextBlockIndex].nextNode)
                                     }
                             }} disabled={!answer}> Next { "   "} <span><ArrowRightCircleIcon size={15} /></span></Button>
                             </>
@@ -228,7 +228,7 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                     leaveTo="opacity-0 translate-y-4">
 
                         <RadioGroup value={answer} onValueChange={setAnswer} className="mt-7">
-                            {data.options.map((option, index) => (<div className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
+                            {data.options.map((option, index) => (<div key={index} className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
                                 <RadioGroupItem value={option.value} id={`r${index+1}`} />
                                 <Label htmlFor={`r${index+1}`} className="w-full m-2">{option.value}</Label>
                             </div>)) }
@@ -255,11 +255,11 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                             <>
                             {!isFirst ? <Button variant='outline' className="flex gap-1 text-black"><span><ArrowLeftCircleIcon size={15} /></span>Prev</Button> :  <div className='flex-1' />}
                             <Button className="flex gap-1" onClick={() =>{
-                                if(!!data.nextBlock && data.type === 'text')
-                                    setCurrentLevel(data.nextBlock)
+                                if(!!data.nextStep && data.nextStep !== -1 && data.type === 'text')
+                                    setCurrentLevel(data.nextStep)
                                     else {
                                         const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
-                                        setCurrentLevel(data.options[nextBlockIndex].nextBlock)
+                                        setCurrentLevel(data.options[nextBlockIndex].nextNode)
                                     }
                             }} disabled={!answer}> Next { "   "} <span><ArrowRightCircleIcon size={15} /></span></Button>
                             </>
@@ -275,15 +275,17 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
   )
 }
 
-const UserFormLevels = () => {
+const UserFormLevels = ({data}) => {
     const [parent] = useAutoAnimate();
     const [currentLevel, setCurrentLevel] = useState(0);
     const [answers, setAnswers] = useState([]);
+    const [questionsData, setQuestionsData] = useState(data.questions);
+    console.log(currentLevel)
     return (
         <div ref={parent}>
-            {!!data && data.map((item, index, data) => {
+            {!!questionsData && questionsData.map((item, index, data) => {
                 if(index === currentLevel) {
-                  return  <UserForm isLast={index === (data.length-1)} isFirst={index === 0} data={item} setCurrentLevel={setCurrentLevel} setAnswers={setAnswers} />
+                  return  <UserForm key={index} isLast={index === (data.length-1)} isFirst={index === 0} data={item} setCurrentLevel={setCurrentLevel} setAnswers={setAnswers} />
                 }
             })}
         </div>

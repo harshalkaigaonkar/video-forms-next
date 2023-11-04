@@ -147,8 +147,8 @@ const NodeEditor = ({ nodes, setNodes }) => {
         type: "questionNode",
         data: { ...nodeData, ...(nodeData?.type === "mcq" && { options }) },
         position: {
-          x: 0,
-          y: 0,
+          x: 400,
+          y: 400,
         },
       };
       setNodes((nds) => nds.concat(newNode));
