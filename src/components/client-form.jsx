@@ -149,7 +149,7 @@ const UserForm = ({
                       <div key={index} className="   w-full  ">
                         <Label
                           htmlFor={`r${index + 1}`}
-                          className="w-full flex items-center border rounded-xl cursor-pointer gap-2 px-4 py-2 m-2"
+                          className="w-full flex items-center border rounded-xl cursor-pointer gap-2 p-4 m-2"
                         >
                           <RadioGroupItem
                             value={option.value}
@@ -290,7 +290,7 @@ const UserForm = ({
                         <div key={index} className="   w-full  ">
                           <Label
                             htmlFor={`r${index + 1}`}
-                            className="w-full flex items-center border rounded-xl cursor-pointer gap-2 px-4 py-2 m-2"
+                            className="w-full flex items-center border rounded-xl cursor-pointer gap-2 p-4 m-2"
                           >
                             <RadioGroupItem
                               value={option.value}
