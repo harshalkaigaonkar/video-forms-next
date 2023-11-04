@@ -16,7 +16,7 @@ export default function Home() {
 
 export const getServerSideProps = async (context) => {
   const id = context.query.id;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get-form?id=${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/get-form?id=${id}`);
   const repo = await res.json();
   return { props: { repo } };
 };
