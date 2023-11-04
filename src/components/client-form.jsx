@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { Textarea } from './ui/textarea'
 import { Audio } from 'react-loader-spinner'
+import { Transition } from '@headlessui/react'
 
 const data = [
     {
@@ -125,23 +126,52 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                 
                 )
             }
-                <video ref={videoRef} onPlay={() => {setShowPlay(true); setShowLoader(false)}} onPause={() => setShowPlay(false)} className='absolute w-full h-full top-0 left-0 object-cover rounded-2' src={data.video} onLoad={() => showLoader(true)} autoFocus autoPlay />
+                <video ref={videoRef} onPlay={() => {setShowPlay(true); setShowLoader(false)}} onPause={() => setShowPlay(false)} onLoadedMetadata={() => setShowPlay(true)} className='absolute w-full h-full top-0 left-0 object-cover rounded-2' src={data.video} onLoad={() => showLoader(true)} autoFocus autoPlay />
             </div>
             <div className='hidden md:flex w-1/2 py-8 px-5 flex-col justify-between'>
-            <div>
-                <h1 className='font-bold text-xl'>{data.label}</h1>
+            <Transition show={true} appear>
+                <Transition.Child  unmount appear enter="transition-all ease-out duration-300 delay-200"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+                    
+                    <h1 className='font-bold text-xl'>{data.label}</h1></Transition.Child>
                  {!!data.type && (data.type === "text" ? (
+                    <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+
                     <Textarea className="mt-5" placeholder="something" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+                    </Transition.Child>
                  ): (
+                    <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+
                     <RadioGroup value={answer} onValueChange={setAnswer} className="mt-7">
                         {data.options.map((option, index) => (<div className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
                             <RadioGroupItem value={option.value} id={`r${index+1}`} />
                             <Label htmlFor={`r${index+1}`} className="w-full m-2">{option.value}</Label>
                         </div>)) }
                     </RadioGroup>
+                    </Transition.Child>
                  ))}
-            </div>
-                <div className='flex flex-row justify-between items-center'>
+            </Transition>
+            <Transition show={true} as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-500"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+<div className='flex flex-row justify-between items-center'>
                     {
                         isLast ? (
                             <>
@@ -163,21 +193,57 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                         )
                     }
                 </div>
+                
+            </Transition>
             </div>
             <div className='md:hidden w-full h-auto max-h-[50%] overflow-auto absolute z-20 bottom-0 py-8 px-5 flex flex-col justify-between bg-gradient-to-t from-black/80 via-black/50 to-black/5 opacity-100'>
+            <Transition show={true} appear>
+                
                 <div className='overflow-auto text-white'>
+                <Transition.Child  unmount appear enter="transition-all ease-out duration-300 delay-200"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+                        
                     <h1 className='font-bold text-xl'>{data.label}</h1>
+                    </Transition.Child>
                     {!!data.type && (data.type === "text" ? (
+                        <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+
                         <Textarea className="mt-5 text-black" placeholder="something" value={answer} onChange={(e) => setAnswer(e.target.value)} />
+                    </Transition.Child>
                     ): (
+                        <Transition.Child as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-300"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+
                         <RadioGroup value={answer} onValueChange={setAnswer} className="mt-7">
                             {data.options.map((option, index) => (<div className="flex items-center space-x-3 p-2 border w-full rounded-xl cursor-pointer">
                                 <RadioGroupItem value={option.value} id={`r${index+1}`} />
                                 <Label htmlFor={`r${index+1}`} className="w-full m-2">{option.value}</Label>
                             </div>)) }
                         </RadioGroup>
+                    </Transition.Child>
                     ))}
                 </div>
+                </Transition>
+                <Transition show={true} as={React.Fragment} unmount appear enter="transition-all ease-out duration-300 delay-500"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition-opacity ease-linear duration-300"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 translate-y-4">
+
                 <div className='flex flex-row justify-between items-center mt-2 text-white'>
                     {
                         isLast ? (
@@ -200,6 +266,9 @@ const UserForm = ({data, setCurrentLevel, setAnswers, isLast, isFirst}) => {
                         )
                     }
                 </div>
+                    </Transition>
+
+               
             </div>
         </DialogContent>
     </Dialog>
