@@ -13,7 +13,6 @@ export default async function handler(req, res) {
         questions: true,
       },
     });
-    console.log(form);
     res.status(200).json({ form });
   } catch (err) {
     res.status(500).json({ error: err.message });

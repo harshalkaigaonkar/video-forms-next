@@ -43,7 +43,6 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
         },
         (error, result) => {
           if (!error && result && result.event === "success") {
-            console.log("Done! Here is the image info: ", result.info);
             setVideoUrl(result.info.url);
             setPublicId(result.info.url);
           }

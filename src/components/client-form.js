@@ -14,6 +14,9 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Textarea } from "./ui/textarea";
 import { Transition } from "@headlessui/react";
+import { submitResponses } from "@/api-functions/answers.api";
+import { useRouter } from "next/router";
+import { useToast } from "./ui/use-toast";
 
 const UserForm = ({
   data,
@@ -46,7 +49,6 @@ const UserForm = ({
   }, [data.answer]);
 
   const onPrevHandler = () => {
-    console.log("clicked");
     if (questionsMapping.length === 0) {
       return;
     }
@@ -61,8 +63,6 @@ const UserForm = ({
       nextStep = data.nextStep;
     else {
       const nextBlockIndex = data.options.findIndex((i) => i.value === answer);
-
-      console.log(nextBlockIndex);
 
       if (nextBlockIndex !== -1) {
         nextStep = data.options[nextBlockIndex].nextNode;
@@ -383,9 +383,11 @@ const UserForm = ({
 
 const UserFormLevels = ({ data, userInfo }) => {
   const [parent] = useAutoAnimate();
+  const { toast } = useToast();
   const [currentLevel, setCurrentLevel] = useState(0);
   const [questionsData, setQuestionsData] = useState(data.questions);
   const [questionsMapping, setQuestionsMapping] = useState([0]);
+  const router = useRouter();
 
   const onSubmitForm = (id, answer) => () => {
     const newQuestionsData = [
@@ -400,13 +402,26 @@ const UserFormLevels = ({ data, userInfo }) => {
       questions: newQuestionsData,
       user: userInfo,
     };
-    console.log(body);
+
+    submitResponses(body)
+      .then((data) => {
+        toast({
+          variant: "success",
+          title: "Thank you for your response.",
+        });
+        router.push(`/form/${data.id}/thanks`);
+      })
+      .catch((err) => {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong. Please try again.",
+        });
+      });
   };
   return (
     <div ref={parent}>
       {!!questionsData &&
         questionsData.map((item, index) => {
-          console.log(item);
           const hasNextNode =
             (!!item.nextStep && item.nextStep !== -1 && item.type === "text") ||
             item.options.find((i) => i.nextNode !== -1);

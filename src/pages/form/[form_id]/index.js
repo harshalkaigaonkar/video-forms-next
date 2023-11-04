@@ -1,6 +1,4 @@
 import UserForm from "@/components/client-form";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import UserInfoDialog from "@/components/user-info-dialog";
@@ -65,7 +63,6 @@ export default function Form({ form }) {
 
 export const getServerSideProps = async (context) => {
   const id = context.query.form_id;
-  console.log(id);
   const res = await fetch(`http://localhost:3000/api/get-form?id=${id}`);
   const result = await res.json();
   return { props: { form: result?.form } };

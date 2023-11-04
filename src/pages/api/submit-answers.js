@@ -8,14 +8,16 @@ export default async function handler(req, res) {
 
     const formId = questions[0].formId;
 
-    const answers = questions.map((question) => ({
-      answer: question.answer,
-      question: {
-        connect: {
-          id: question.id,
+    const answers = questions
+      .map((question) => ({
+        answer: question.answer,
+        question: {
+          connect: {
+            id: question.id,
+          },
         },
-      },
-    }));
+      }))
+      .filter((item) => !!item?.answer?.trim());
 
     if (req.method === "POST") {
       const response = await prisma.response.create({
@@ -30,10 +32,8 @@ export default async function handler(req, res) {
           },
           user: {
             create: {
-              create: {
-                name: user.name,
-                password: user.email,
-              },
+              name: user.name,
+              email: user.email,
             },
           },
         },
@@ -44,6 +44,7 @@ export default async function handler(req, res) {
       res.status(405).json({ message: "Method Not Allowed" });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 }

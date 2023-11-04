@@ -40,7 +40,6 @@ export default function Home({ forms }) {
         {forms.map((item) => (
           <Card className="px-0" key={item.id}>
             <CardContent>
-              {console.log(item)}
               <video autoPlay loop muted src={item.questions[0].video}></video>
             </CardContent>
             <CardHeader>
