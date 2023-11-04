@@ -198,7 +198,8 @@ const NodeEditor = ({ nodes, setNodes }) => {
             <CloudinaryUploadWidget
               setPublicId={(nodeData) => console.log(nodeData)}
               uwConfig={{
-                cloudName: "dhwjzvqyv",
+                cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_NAME,
+                uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_PRESET,
               }}
             />
           </div>
