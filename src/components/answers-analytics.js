@@ -20,42 +20,42 @@ const AnswerAnalytics = ({form}) => {
             <Button>Create Form</Button>
             </Link>
         </nav>
-    <h3 className='mx-10 mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl'>Answers / Form / {form.id}</h3>
+    <h3 className='mx-10 mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl'>Answers / Form / {form?.id}</h3>
     <div className='mx-10 mt-5'>
     <h6 className='text-sm font-bold'>Name</h6>
-        <h4 className='font-medium  text-xl text-black/80'>{form.name}</h4>
+        <h4 className='font-medium  text-xl text-black/80'>{form?.name}</h4>
 
         <h3 className='font-bold text-sm mt-10'>Questions</h3>
         <Accordion type="single" collapsible className="w-full">
       {!!form.questions && form.questions.map((question, index,) => (
         <AccordionItem value={`item-${index+1}`} key={index}>
         <AccordionTrigger><div className='flex flex-col items-start justify-center'>
-            <p className='text-xl font-normal'>{question.label}</p>
-            <p className='text-sm font-normal text-black/50'>{question.type} type | {question.Answers.length} answers</p>
+            <p className='text-xl font-normal'>{question?.label}</p>
+            <p className='text-sm font-normal text-black/50'>{question?.type} type | {question?.Answers?.length} answers</p>
         </div></AccordionTrigger>
         <AccordionContent >
         <h2 className='my-3 '>Answers</h2>
-          {question.type === 'text' ? (
+          {!!question.type && question.type === 'text' ? (
             <>
                 <div className="flex flex-col gap-3">
-                    {!!question.Answers && question.Answers.map((ans, index, arr) => (
+                    {!!question?.Answers && question?.Answers?.map((ans, index, arr) => (
                         <div  key={index}>
-                            <p className="text-xs font-normal text-black/70">{ans.response.user.name}, {ans.response.user.email}</p>
+                            <p className="text-xs font-normal text-black/70">{ans?.response?.user?.name}, {ans?.response?.user?.email}</p>
                             <p className='text-lg font-semibold'>{ans.answer}</p>
                             {arr.length-1 !== index && <hr />}
                         </div>
                     ))}
                 </div>
             </>
-          ): (
+          ): (question.type === 'mcq' && (
             <>
             <div className="flex flex-col gap-3">
-            {JSON.parse(question.options).map((option, index) => (
+            {!!question.options && JSON.parse(question?.options).map((option, index) => (
                 <MCQAnswers key={index} question={question} option={option} index={index}/>
                 ))}
         </div>
             </>
-          )}
+          ))}
           
         </AccordionContent>
       </AccordionItem>
@@ -70,8 +70,7 @@ const MCQAnswers = ({question, option, index}) => {
     const [parent] = useAutoAnimate();
     const percentage = useMemo(() => {
         const totalAnswers = question?.Answers?.length;
-        const obtAns = question?.Answers?.filter((ans) => ans.answer === option.value)?.length
-        console.log(obtAns, totalAnswers, question)
+        const obtAns = question?.Answers?.filter((ans) => ans?.answer === option?.value)?.length
         return (obtAns / totalAnswers) * 100
     }
     , [question, option])
@@ -80,7 +79,7 @@ const MCQAnswers = ({question, option, index}) => {
         <div key={index} className="flex flex-col gap-2 w-[60%]">
             <div className='w-full flex justify-between items-center'>
             <p className='text-md font-medium'>{index+1} option | {option.value}</p>
-            <p>{percentage}%</p>
+            <p className='text-black/60'>{percentage}%</p>
             </div>
             <Progress ref={parent} value={percentage} className="w-full h-1" />
         </div>
