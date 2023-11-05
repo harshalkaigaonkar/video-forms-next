@@ -226,6 +226,7 @@ const UserForm = ({
                     variant=""
                     type="submit"
                     onClick={onSubmitForm(data.id, answer)}
+                    disabled={!answer?.trim()}
                   >
                     Submit 🔥
                   </Button>
@@ -353,6 +354,7 @@ const UserForm = ({
                     variant=""
                     type="submit"
                     onClick={onSubmitForm(data.id, answer)}
+                    disabled={!answer?.trim()}
                   >
                     Submit 🔥
                   </Button>
@@ -416,6 +418,10 @@ const UserFormLevels = ({ data, userInfo }) => {
       user: userInfo,
     };
 
+    toast({
+      variant: "loading",
+      title: "Submitting...",
+    });
     submitResponses(body)
       .then((data) => {
         toast({

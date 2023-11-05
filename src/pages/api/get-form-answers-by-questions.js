@@ -12,7 +12,15 @@ export default async function handler(req, res) {
       include: {
         questions: {
           include: {
-            Answers: true,
+            Answers: {
+              include: {
+                response: {
+                  include: {
+                    user: true,
+                  },
+                },
+              },
+            },
           },
         },
       },

@@ -10,6 +10,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import { internalsSymbol } from "reactflow";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,20 +30,23 @@ export default function Home({ forms }) {
     <main
       className={` text-black min-h-screen px-2 sm:px-4 h-screen w-screen ${inter.className}`}
     >
-      <nav className="sticky bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-10 top-0">
+      <nav className=" bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-2 sm:px-10 top-0">
         <div className="flex items-center gap-2">
           <h3 className=" font-bold text-2xl   bg-clip-text text-transparent bg-gradient-to-b from-gray-300 via-gray-900 to-black ">
             <Link href="/">VideoForms</Link>
           </h3>
         </div>
-        <Link className=" hidden sm:block" href="/create">
-          <Button>Create Form</Button>
+        <Link className="" href="/create">
+          <Button className="hidden sm:block">Create Form</Button>
+          <Button className="flex sm:hidden text-xl items-center justify-center">
+            +
+          </Button>
         </Link>
       </nav>
-      <h3 className="mx-10 mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl">
+      <h3 className="mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl">
         My Forms / Admin
       </h3>
-      <div className="px-10 mt-3 py-4 sm:py-3 w-full gap-3 flex flex-row flex-wrap justify-start items-center">
+      <div className=" mt-3 py-4 sm:py-3 w-full gap-3 flex flex-row flex-wrap items-center justify-around">
         {forms.map((item) => (
           <Card className="px-0 w-80" key={item.id}>
             <CardContent className="relative h-96">
@@ -60,14 +64,14 @@ export default function Home({ forms }) {
                 {item.questions.length} questions
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-end">
+            <CardFooter className="flex justify-between">
+              <Button variant="outline">
+                <Link href={`/${item.id}`}>View Answers</Link>
+              </Button>
               <Button onClick={handleCopy(item.id)}>🚀 Share</Button>
             </CardFooter>
           </Card>
         ))}
-        <Link href={"/create"} className="absolute top-4 right-4 sm:hidden">
-          <Button>Create Form</Button>
-        </Link>
       </div>
     </main>
   );

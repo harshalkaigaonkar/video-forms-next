@@ -145,6 +145,10 @@ const FlowEditor = () => {
         }, true);
 
         if (validNodes) {
+          toast({
+            variant: "loading",
+            title: "Saving...",
+          });
           createForm({
             nodes: flow.nodes,
             edges: flow.edges,
