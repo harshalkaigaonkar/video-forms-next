@@ -191,6 +191,17 @@ const FlowEditor = () => {
     setSaveModalOpen(true);
   };
 
+  const handleCustomNodesChange = (props) => {
+    if (!!props.length && props[0]?.type === "remove" && props[0]?.id === "1") {
+      toast({
+        variant: "destructive",
+        title: "Cannot delete first node",
+      });
+      return;
+    }
+    onNodesChange(props);
+  };
+
   return (
     <>
       <NodeEditor nodes={nodes} setNodes={setNodes} />
@@ -215,7 +226,7 @@ const FlowEditor = () => {
         className="border"
         nodes={nodes}
         edges={edges}
-        onNodesChange={onNodesChange}
+        onNodesChange={handleCustomNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onInit={setRfInstance}
