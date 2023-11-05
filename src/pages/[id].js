@@ -1,3 +1,4 @@
+import AnswerAnalytics from "@/components/answers-analytics";
 import UserForm from "@/components/client-form";
 import { useToast } from "@/components/ui/use-toast";
 import UserInfoDialog from "@/components/user-info-dialog";
@@ -11,8 +12,10 @@ export default function Form({ form }) {
 
   return (
     <main
-      className={`flex text-black min-h-screen h-screen w-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    ></main>
+      className={`flex text-black min-h-screen h-screen w-screen flex-col items-center justify-between ${inter.className}`}
+    >
+      <AnswerAnalytics form={form} />
+    </main>
   );
 }
 

@@ -10,6 +10,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import { internalsSymbol } from "reactflow";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -60,7 +61,8 @@ export default function Home({ forms }) {
                 {item.questions.length} questions
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex justify-end">
+            <CardFooter className="flex justify-between">
+              <Button variant="outline"><Link href={`/${item.id}`}>View Answers</Link></Button>
               <Button onClick={handleCopy(item.id)}>🚀 Share</Button>
             </CardFooter>
           </Card>
