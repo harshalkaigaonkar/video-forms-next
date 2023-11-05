@@ -61,7 +61,7 @@ export default function Home({ forms }) {
               </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-end">
-              <Button onClick={handleCopy}>🚀 Share</Button>
+              <Button onClick={handleCopy(item.id)}>🚀 Share</Button>
             </CardFooter>
           </Card>
         ))}
