@@ -165,8 +165,8 @@ const UserForm = ({
                   leaveTo="opacity-0 translate-y-4"
                 >
                   <Textarea
-                    className="mt-5"
-                    placeholder="something"
+                    className="mt-5 rounded-xl"
+                    placeholder="Enter the answer"
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                   />
@@ -291,8 +291,8 @@ const UserForm = ({
                     leaveTo="opacity-0 translate-y-4"
                   >
                     <Textarea
-                      className="mt-5 text-black"
-                      placeholder="something"
+                      className="mt-5 rounded-xl text-black"
+                      placeholder="Enter your answer"
                       value={answer}
                       onChange={(e) => setAnswer(e.target.value)}
                     />
@@ -318,7 +318,7 @@ const UserForm = ({
                         <div key={index} className="   w-full  ">
                           <Label
                             htmlFor={`r${index + 1}`}
-                            className="w-full flex items-center border rounded-xl cursor-pointer gap-2 p-4 m-2"
+                            className="w-[90%] mx-auto flex items-center border rounded-xl cursor-pointer gap-2 p-4 m-2"
                           >
                             <RadioGroupItem
                               value={option.value}
@@ -346,33 +346,46 @@ const UserForm = ({
             leaveTo="opacity-0 translate-y-4"
           >
             <div className="flex flex-row justify-between items-center mt-2 text-white">
-              <>
-                {!isFirst ? (
+              {isLast ? (
+                <>
+                  <div class="flex-1" />
                   <Button
-                    variant="outline"
-                    className="flex gap-1 text-black"
-                    onClick={onPrevHandler}
+                    variant=""
+                    type="submit"
+                    onClick={onSubmitForm(data.id, answer)}
                   >
-                    <span>
-                      <ArrowLeftCircleIcon size={15} />
-                    </span>
-                    Prev
+                    Submit 🔥
                   </Button>
-                ) : (
-                  <div className="flex-1" />
-                )}
-                <Button
-                  className="flex gap-1"
-                  onClick={onNextHandler}
-                  disabled={!answer}
-                >
-                  {" "}
-                  Next {"   "}{" "}
-                  <span>
-                    <ArrowRightCircleIcon size={15} />
-                  </span>
-                </Button>
-              </>
+                </>
+              ) : (
+                <>
+                  {!isFirst ? (
+                    <Button
+                      variant="outline"
+                      className="flex gap-1 text-black"
+                      onClick={onPrevHandler}
+                    >
+                      <span>
+                        <ArrowLeftCircleIcon size={15} />
+                      </span>
+                      Prev
+                    </Button>
+                  ) : (
+                    <div className="flex-1" />
+                  )}
+                  <Button
+                    className="flex gap-1"
+                    onClick={onNextHandler}
+                    disabled={!answer}
+                  >
+                    {" "}
+                    Next {"   "}{" "}
+                    <span>
+                      <ArrowRightCircleIcon size={15} />
+                    </span>
+                  </Button>
+                </>
+              )}
             </div>
           </Transition>
         </div>
