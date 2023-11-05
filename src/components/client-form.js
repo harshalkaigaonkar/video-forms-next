@@ -226,6 +226,7 @@ const UserForm = ({
                     variant=""
                     type="submit"
                     onClick={onSubmitForm(data.id, answer)}
+                    disabled={!answer?.trim()}
                   >
                     Submit 🔥
                   </Button>
@@ -353,6 +354,7 @@ const UserForm = ({
                     variant=""
                     type="submit"
                     onClick={onSubmitForm(data.id, answer)}
+                    disabled={!answer?.trim()}
                   >
                     Submit 🔥
                   </Button>

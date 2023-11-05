@@ -15,7 +15,7 @@ import { Progress } from "./ui/progress";
 const AnswerAnalytics = ({ form }) => {
   return (
     <div className="w-full">
-      <nav className="sticky bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-10 top-0">
+      <nav className=" bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-10 top-0">
         <div className="flex items-center gap-2">
           <h3 className=" font-bold text-2xl   bg-clip-text text-transparent bg-gradient-to-b from-gray-300 via-gray-900 to-black ">
             <Link href="/">VideoForms</Link>
