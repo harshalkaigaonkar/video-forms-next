@@ -141,7 +141,7 @@ const FlowEditor = () => {
         }
 
         const validNodes = nodes.reduce((prev, node) => {
-          return prev && !!node?.video && !!node?.question?.trim();
+          return prev && !!node?.data?.video && !!node?.data?.question?.trim();
         }, true);
 
         if (validNodes) {
