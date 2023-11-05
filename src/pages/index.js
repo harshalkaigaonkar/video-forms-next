@@ -15,12 +15,15 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ forms }) {
   const { toast } = useToast();
-  const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      toast({
-        description: "Copied to clipboard",
+  const handleCopy = (formId) => () => {
+    navigator.clipboard
+      .writeText(`${window.location.origin}/form/${formId}`)
+      .then(() => {
+        toast({
+          variant: "success",
+          description: "Copied to clipboard",
+        });
       });
-    });
   };
   return (
     <main
@@ -29,23 +32,33 @@ export default function Home({ forms }) {
       <nav className="sticky bg-white justify-between flex items-center border-b gap-2 w-full p-4 px-10 top-0">
         <div className="flex items-center gap-2">
           <h3 className=" font-bold text-2xl   bg-clip-text text-transparent bg-gradient-to-b from-gray-300 via-gray-900 to-black ">
-            VideoForms
+            <Link href="/">VideoForms</Link>
           </h3>
         </div>
         <Link className=" hidden sm:block" href="/create">
           <Button>Create Form</Button>
         </Link>
       </nav>
-      <h3 className="mx-10 mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl">My Forms / Admin</h3>
+      <h3 className="mx-10 mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl">
+        My Forms / Admin
+      </h3>
       <div className="px-10 mt-3 py-4 sm:py-3 w-full gap-3 flex flex-row flex-wrap justify-start items-center">
         {forms.map((item) => (
           <Card className="px-0 w-80" key={item.id}>
             <CardContent className="relative h-96">
-              <video autoPlay loop muted src={item.questions[0].video} className="absolute w-full h-full top-0 left-0 object-cover rounded-t-md rounded-b-none"></video>
+              <video
+                autoPlay
+                loop
+                muted
+                src={item.questions[0].video}
+                className="absolute w-full h-full top-0 left-0 object-cover rounded-t-md rounded-b-none"
+              ></video>
             </CardContent>
             <CardHeader>
               <CardTitle>{item.name}</CardTitle>
-              <CardDescription className="text-black/30">{item.questions.length} questions</CardDescription>
+              <CardDescription className="text-black/30">
+                {item.questions.length} questions
+              </CardDescription>
             </CardHeader>
             <CardFooter className="flex justify-end">
               <Button onClick={handleCopy}>🚀 Share</Button>
