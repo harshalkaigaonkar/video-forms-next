@@ -7,7 +7,6 @@ const CloudinaryScriptContext = createContext();
 
 function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
   const [loaded, setLoaded] = useState(false);
-  const [videoUrl, setVideoUrl] = useState(null);
 
   useEffect(() => {
     // Check if the script is already loaded
@@ -43,7 +42,6 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
         },
         (error, result) => {
           if (!error && result && result.event === "success") {
-            setVideoUrl(result.info.url);
             setPublicId(result.info.url);
           }
         }
@@ -62,7 +60,6 @@ function CloudinaryUploadWidget({ uwConfig, setPublicId }) {
 
   return (
     <CloudinaryScriptContext.Provider value={{ loaded }}>
-      {!!videoUrl && <video controls className="my-4" src={videoUrl}></video>}
       <Button id="upload_widget" onClick={initializeCloudinaryWidget}>
         Upload
       </Button>

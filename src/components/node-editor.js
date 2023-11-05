@@ -216,6 +216,9 @@ const NodeEditor = ({ nodes, setNodes }) => {
             {!!nodeData?.video && (
               <p className=" truncate text-ellipsis ">{nodeData.video}</p>
             )}
+            {!!nodeData?.video && (
+              <video controls className="my-4" src={nodeData.video}></video>
+            )}
             <CloudinaryUploadWidget
               setPublicId={(url) => {
                 setNodeData((prev) => ({

@@ -9,6 +9,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Inter } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,24 +37,36 @@ export default function Home({ forms }) {
           <Button>Create Form</Button>
         </Link>
       </nav>
-      <div className=" max-w-[1080px] px-0 py-4 sm:py-8 w-full mx-auto gap-4 grid grid-cols-1 sm:grid-cols-2 ">
-        {forms.map((item) => (
-          <Card className="px-0" key={item.id}>
-            <CardContent>
-              <video autoPlay loop muted src={item.questions[0].video}></video>
-            </CardContent>
-            <CardHeader>
-              <CardTitle>{item.name}</CardTitle>
-            </CardHeader>
-            <CardFooter className="flex justify-end">
-              <Button onClick={handleCopy}>🚀 Share</Button>
-            </CardFooter>
-          </Card>
-        ))}
-        <Link href={"/create"} className="absolute bottom-4 right-4 sm:hidden">
-          <Button>Create Form</Button>
-        </Link>
-      </div>
+      {!!forms?.length ? (
+        <div className=" max-w-[1080px] px-0 py-4 sm:py-8 w-full mx-auto gap-4 grid grid-cols-1 sm:grid-cols-2 ">
+          {forms.map((item) => (
+            <Card className="px-0" key={item.id}>
+              <CardContent>
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  src={item.questions[0].video}
+                ></video>
+              </CardContent>
+              <CardHeader>
+                <CardTitle>{item.name}</CardTitle>
+              </CardHeader>
+              <CardFooter className="flex justify-end">
+                <Button onClick={handleCopy}>🚀 Share</Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <div className="mx-auto min-h-[70vh] flex flex-col items-center justify-center text-center">
+          <Image width={400} height={500} alt="Empty" src="/empty.svg" />
+          <h3 className=" text-2xl ">No forms found</h3>
+        </div>
+      )}
+      <Link href={"/create"} className="absolute bottom-4 right-4 sm:hidden">
+        <Button>Create Form</Button>
+      </Link>
     </main>
   );
 }

@@ -19,6 +19,7 @@ import { QuestionNode } from "./question-node";
 import { useCreateFormInstanceQuery } from "@/hooks/useFormInstanceQuery";
 import { createForm } from "@/api-functions/formInstance.api";
 import SaveFormDialog from "./save-form-dialog";
+import { useRouter } from "next/router";
 
 const flowKey = "example-flow";
 
@@ -52,6 +53,7 @@ const FlowEditor = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [rfInstance, setRfInstance] = useState(null);
   const { setViewPort } = useReactFlow();
+  const router = useRouter();
 
   // const { mutate: createForm } = useCreateFormInstanceQuery({});
 
@@ -138,14 +140,40 @@ const FlowEditor = () => {
           return;
         }
 
-        createForm({
-          nodes: flow.nodes,
-          edges: flow.edges,
-          formName,
-        });
+        const validNodes = nodes.reduce((prev, node) => {
+          return prev && !!node?.video && !!node?.question?.trim();
+        }, true);
+
+        if (validNodes) {
+          createForm({
+            nodes: flow.nodes,
+            edges: flow.edges,
+            formName,
+          })
+            .then(() => {
+              toast({
+                variant: "success",
+                title: "Form saved",
+              });
+              router.push("/");
+              setSaveModalOpen(false);
+            })
+            .catch((error) => {
+              toast({
+                variant: "destructive",
+                title: "Something went wrong",
+              });
+            });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "All nodes must have a question and a video",
+          });
+          return;
+        }
       }
     },
-    [rfInstance, toast]
+    [rfInstance, toast, nodes, router]
   );
 
   const { dispatch } = useNodesContext();
