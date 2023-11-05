@@ -418,6 +418,10 @@ const UserFormLevels = ({ data, userInfo }) => {
       user: userInfo,
     };
 
+    toast({
+      variant: "loading",
+      title: "Submitting...",
+    });
     submitResponses(body)
       .then((data) => {
         toast({
