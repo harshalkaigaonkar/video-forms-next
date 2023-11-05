@@ -40,7 +40,7 @@ const AnswerAnalytics = ({form}) => {
                 <div className="flex flex-col gap-3">
                     {!!question?.Answers && question?.Answers?.map((ans, index, arr) => (
                         <div  key={index}>
-                            <p className="text-xs font-normal text-black/70">{ans?.response?.user?.name}, {ans?.response?.user?.email}</p>
+                            <p className="text-xs font-normal text-black/70">{ans.response.user.name}, {ans.response.user.email}</p>
                             <p className='text-lg font-semibold'>{ans.answer}</p>
                             {arr.length-1 !== index && <hr />}
                         </div>
