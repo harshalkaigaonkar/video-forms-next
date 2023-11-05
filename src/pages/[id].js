@@ -17,10 +17,10 @@ export default function Form({ form }) {
 }
 
 export const getServerSideProps = async (context) => {
-  const id = context.query.form_id;
+  const id = context.query.id;
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/get-form-answers-by-questions?id=${id}`
   );
   const result = await res.json();
-  return { props: { form: result?.form } };
+  return { props: { form: result.forms } };
 };
