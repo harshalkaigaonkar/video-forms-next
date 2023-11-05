@@ -426,7 +426,7 @@ const UserFormLevels = ({ data, userInfo }) => {
             (!!item.nextStep && item.nextStep !== -1 && item.type === "text") ||
             item.options.find((i) => i.nextNode !== -1);
 
-          if (index === currentLevel) {
+          if (item.step === currentLevel) {
             return (
               <UserForm
                 key={index}
