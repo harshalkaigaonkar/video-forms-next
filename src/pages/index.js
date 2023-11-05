@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ forms }) {
   const { toast } = useToast();
-  const handleCopy = (formId) => {
+  const handleCopy = (formId) => () => {
     navigator.clipboard
       .writeText(`${window.location.origin}/form/${formId}`)
       .then(() => {
@@ -56,7 +56,7 @@ export default function Home({ forms }) {
                 <CardTitle>{item.name}</CardTitle>
               </CardHeader>
               <CardFooter className="flex justify-end">
-                <Button onClick={handleCopy}>🚀 Share</Button>
+                <Button onClick={handleCopy(item.id)}>🚀 Share</Button>
               </CardFooter>
             </Card>
           ))}
