@@ -8,8 +8,6 @@ import { useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Form({ form }) {
-  console.log(form);
-
   return (
     <main
       className={`flex text-black min-h-screen h-screen w-screen flex-col items-center justify-between ${inter.className}`}
