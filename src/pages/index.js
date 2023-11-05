@@ -15,12 +15,15 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ forms }) {
   const { toast } = useToast();
-  const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      toast({
-        description: "Copied to clipboard",
+  const handleCopy = (formId) => {
+    navigator.clipboard
+      .writeText(`${window.location.origin}/form/${formId}`)
+      .then(() => {
+        toast({
+          variant: "success",
+          description: "Copied to clipboard",
+        });
       });
-    });
   };
 
   return (

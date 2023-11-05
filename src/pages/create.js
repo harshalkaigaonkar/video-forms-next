@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import { ReactFlowProvider } from "reactflow";
 import NodesProvider from "@/providers/NodesProvider";
-import { Toaster } from "@/components/ui/toaster";
 import FlowEditor from "@/components/flow-editor";
 import Link from "next/link";
 
@@ -24,7 +23,6 @@ export default function Create() {
           <ReactFlowProvider>
             <FlowEditor />
           </ReactFlowProvider>
-          <Toaster />
         </div>
       </main>
     </NodesProvider>

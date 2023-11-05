@@ -1,5 +1,4 @@
 import UserForm from "@/components/client-form";
-import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import UserInfoDialog from "@/components/user-info-dialog";
 import { Inter } from "next/font/google";
@@ -56,14 +55,15 @@ export default function Form({ form }) {
           onSubmitHandler={onSubmitHandler}
         />
       )}
-      <Toaster />
     </main>
   );
 }
 
 export const getServerSideProps = async (context) => {
   const id = context.query.form_id;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/get-form?id=${id}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/get-form?id=${id}`
+  );
   const result = await res.json();
   return { props: { form: result?.form } };
 };
