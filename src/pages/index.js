@@ -65,7 +65,7 @@ export default function Home({ forms }) {
             </CardFooter>
           </Card>
         ))}
-        <Link href={"/create"} className="absolute bottom-4 right-4 sm:hidden">
+        <Link href={"/create"} className="absolute top-4 right-4 sm:hidden">
           <Button>Create Form</Button>
         </Link>
       </div>
