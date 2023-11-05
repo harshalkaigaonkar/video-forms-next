@@ -28,12 +28,21 @@ export const QuestionNode = ({ id, data, isConnectable }) => {
         id={id}
         isConnectable={isConnectable}
       />
-      <Card className="border bg-white p-4">
-        <div>Question:</div>
-        <div className="mb-2">{data.question}</div>
-        <div>Type:</div>
-        <div className=" capitalize mb-4">{data.type}</div>
-        <Button onClick={handleNodeEdit(nodeId)}>Edit Node</Button>
+      <Card className="border rounded-md bg-white relative">
+        {id === "1" && (
+          <div className=" bg-black w-full mb-2 px-2 py-0.5 text-xs rounded-t-md text-white ">
+            First node
+          </div>
+        )}
+        <div className="p-2">
+          <div>Question:</div>
+          <div className="mb-2">{data.question}</div>
+          <div>Type:</div>
+          <div className=" capitalize mb-4">{data.type}</div>
+          <Button className="w-full" onClick={handleNodeEdit(nodeId)}>
+            Edit Node
+          </Button>
+        </div>
       </Card>
     </>
   );
