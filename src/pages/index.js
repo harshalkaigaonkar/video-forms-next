@@ -39,7 +39,7 @@ export default function Home({ forms }) {
         </div>
         <div className="flex flex-row gap-3">
 
-        <Link className="" href="/create">
+        <Link className="" href="https://github.com/harshalkaigaonkar/video-forms-next">
           <Button variant="outline" size="icon"><Github className="w-4 h-4" /></Button>
         </Link>
         <Link className="" href="/create">
