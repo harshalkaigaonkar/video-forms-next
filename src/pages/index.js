@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { Github } from "lucide-react";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import { internalsSymbol } from "reactflow";
@@ -36,12 +37,18 @@ export default function Home({ forms }) {
             <Link href="/">VideoForms</Link>
           </h3>
         </div>
+        <div className="flex flex-row gap-3">
+
+        <Link className="" href="/create">
+          <Button variant="outline" size="icon"><Github className="w-4 h-4" /></Button>
+        </Link>
         <Link className="" href="/create">
           <Button className="hidden sm:block">Create Form</Button>
           <Button className="flex sm:hidden text-xl items-center justify-center">
             +
           </Button>
         </Link>
+        </div>
       </nav>
       <h3 className="mt-8 font-medium text-md text-black/50 border w-fit px-4 py-2 rounded-xl">
         My Forms / Admin
