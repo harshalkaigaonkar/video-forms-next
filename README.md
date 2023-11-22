@@ -1,38 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Screenshots
+![Screenshot 2023-11-22 at 10 56 04 AM](https://github.com/harshalkaigaonkar/video-forms-next/assets/65395607/58499b38-ecc6-4ab0-91b2-c7752a28c928)
+![Screenshot 2023-11-22 at 11 02 02 AM](https://github.com/harshalkaigaonkar/video-forms-next/assets/65395607/e5ffdbd7-0b6f-4798-aef3-27d5be9749b9)
+![Screenshot 2023-11-22 at 10 56 41 AM](https://github.com/harshalkaigaonkar/video-forms-next/assets/65395607/babe5773-1eba-4e69-8ffb-eac8858ca38d)
+![Screenshot 2023-11-22 at 10 56 31 AM](https://github.com/harshalkaigaonkar/video-forms-next/assets/65395607/2915fffc-d57a-4b2b-b433-3c3efa7ca531)
